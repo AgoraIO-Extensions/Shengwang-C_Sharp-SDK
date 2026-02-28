@@ -9,22 +9,73 @@ using view_t = System.UInt64;
 namespace Agora.Rtc
 {
     ///
-    /// @ignore
+    /// <summary>
+    /// A class that provides local and remote audio and video recording capabilities.
+    /// </summary>
     ///
     public abstract class IMediaRecorder
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Registers the IMediaRecorderObserver observer.
+        /// 
+        /// This method sets the callback for audio and video recording, so that the app can be notified of the recording state and information during the recording process.
+        /// Before calling this method, ensure that:
+        /// The IRtcEngine object has been created and initialized.
+        /// The recording object has been created using CreateMediaRecorder.
+        /// </summary>
+        ///
+        /// <param name="callback"> Callback for audio and video stream recording. See IMediaRecorderObserver. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int SetMediaRecorderObserver(IMediaRecorderObserver callback);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Starts audio and video stream recording.
+        /// 
+        /// This method starts audio and video stream recording. The SDK supports recording both local and remote users' audio and video streams.
+        /// Before starting recording, ensure that:
+        /// You have created a media recorder object via CreateMediaRecorder.
+        /// You have registered a recorder observer via SetMediaRecorderObserver to listen for recording-related callbacks.
+        /// You have joined a channel. This method supports recording the following data:
+        /// Microphone audio in AAC format.
+        /// Camera video in H.264 or H.265 format. After recording starts, if the video resolution changes during recording, the SDK stops recording; if the audio sample rate or channel count changes, the SDK continues recording and generates a single MP4 file. A recording file is generated only when recordable audio or video streams are detected. If no recordable streams are detected, or if the streams are interrupted for more than 5 seconds during recording, the SDK stops recording and triggers the OnRecorderStateChanged (RECORDER_STATE_ERROR, RECORDER_REASON_NO_STREAM) callback.
+        /// If you want to record local audio and video streams, make sure the local user role is set to broadcaster before starting recording.
+        /// If you want to record remote users' audio and video streams, make sure you have subscribed to those streams before starting recording.
+        /// </summary>
+        ///
+        /// <param name="config"> Audio and video stream recording configuration. See MediaRecorderConfiguration. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// -2: Invalid parameter. Make sure:
+        /// The specified recording file path is correct and writable.
+        /// The specified recording file format is correct.
+        /// The maximum recording duration is set correctly.
+        /// -4: The current state of IRtcEngine does not support this operation. Possibly because recording is already in progress or has stopped due to an error.
+        /// -7: IRtcEngine is not initialized before calling this method. Make sure the IMediaRecorder object is created before calling this method.
+        /// </returns>
         ///
         public abstract int StartRecording(MediaRecorderConfiguration config);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Stops audio and video stream recording.
+        /// 
+        /// After calling StartRecording, call this method to stop recording; otherwise, the generated recording file may not play correctly.
+        /// </summary>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure:
+        /// -7: IRtcEngine is not initialized before calling this method. Make sure the IMediaRecorder object is created before calling this method.
+        /// </returns>
         ///
         public abstract int StopRecording();
 

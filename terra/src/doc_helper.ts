@@ -35,7 +35,7 @@ let UnityDirPath = [
     "../Agora-C_Sharp-RTC-SDK/Code/Rtc/VideoRender/VideoSurfaceYUVA.cs",
 ]
 
-let DocPath = "./unity_en_ng.json";
+let DocPath = "./unity_ng_json_template_en_full.json";
 
 
 function DeleteOldDocWithFile(filePath: string) {

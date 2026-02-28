@@ -9,32 +9,101 @@ using view_t = System.UInt64;
 namespace Agora.Rtc
 {
     ///
-    /// @ignore
+    /// <summary>
+    /// The IMusicContentCenterEventHandler interface class is used by the SDK to send music content center event notifications to the client.
+    /// </summary>
     ///
     public abstract class IMusicContentCenterEventHandler
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Callback for retrieving music charts.
+        /// 
+        /// After you call the GetMusicCharts method to retrieve all music charts, the SDK triggers this callback.
+        /// </summary>
+        ///
+        /// <param name="requestId"> Request ID. A unique identifier for this request. </param>
+        ///
+        /// <param name="reason"> The request status code from the music content center. See MusicContentCenterStateReason. </param>
+        ///
+        /// <param name="result"> The list of currently available music charts. See MusicChartInfo. </param>
         ///
         public abstract void OnMusicChartsResult(string requestId, MusicChartInfo[] result, MusicContentCenterStateReason reason);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Callback for retrieving music content list.
+        /// 
+        /// When you call the GetMusicCollectionByMusicChartId method to retrieve the music content list for a specific chart, or call SearchMusic to search for music content, the SDK triggers this callback to report detailed information about the music content list in the chart.
+        /// </summary>
+        ///
+        /// <param name="requestId"> Request ID. A unique identifier for this request. </param>
+        ///
+        /// <param name="reason"> The request status code from the music content center. See MusicContentCenterStateReason. </param>
+        ///
+        /// <param name="result"> Detailed information about the music content list. See MusicCollection. </param>
         ///
         public abstract void OnMusicCollectionResult(string requestId, MusicCollection result, MusicContentCenterStateReason reason);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Callback for lyric download URL.
+        /// 
+        /// After you call GetLyric to obtain the lyric download URL for a specified song, the SDK triggers this callback.
+        /// </summary>
+        ///
+        /// <param name="requestId"> Request ID. A unique identifier for this request. </param>
+        ///
+        /// <param name="songCode"> The identifier of the music content. </param>
+        ///
+        /// <param name="lyricUrl"> The download URL for the lyrics. </param>
+        ///
+        /// <param name="reason"> The request status code from the music content center. See MusicContentCenterStateReason. </param>
         ///
         public abstract void OnLyricResult(string requestId, long songCode, string lyricUrl, MusicContentCenterStateReason reason);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Callback for detailed information of a music resource.
+        /// 
+        /// After you call GetSongSimpleInfo to retrieve detailed information of a music resource, the SDK triggers this callback.
+        /// </summary>
+        ///
+        /// <param name="requestId"> The request ID. A unique identifier for this request. </param>
+        ///
+        /// <param name="songCode"> The ID of the music resource, used to identify the music resource. </param>
+        ///
+        /// <param name="simpleInfo">
+        /// Information related to the music resource, including:
+        /// Start and end time (ms) of the chorus segment
+        /// Download URL of the chorus lyrics
+        /// Duration (ms) of the chorus segment
+        /// Song name
+        /// Artist name
+        /// </param>
+        ///
+        /// <param name="reason"> The request status code of the Music Content Center. See MusicContentCenterStateReason. </param>
         ///
         public abstract void OnSongSimpleInfoResult(string requestId, long songCode, string simpleInfo, MusicContentCenterStateReason reason);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Reports events of preloading music resources.
+        /// 
+        /// After you call the Preload [1/2] or Preload [2/2] method to preload music resources, the SDK triggers this callback.
+        /// </summary>
+        ///
+        /// <param name="requestId"> The request ID. A unique identifier for this request. </param>
+        ///
+        /// <param name="songCode"> The ID of the music resource, used to identify a music resource. </param>
+        ///
+        /// <param name="percent"> The current loading progress of the music resource, ranging from [0,100]. </param>
+        ///
+        /// <param name="lyricUrl"> The download URL of the lyrics. </param>
+        ///
+        /// <param name="state"> The current loading state of the music resource. See PreloadState. </param>
+        ///
+        /// <param name="reason"> The request status code of the Music Content Center. See MusicContentCenterStateReason. </param>
         ///
         public abstract void OnPreLoadEvent(string requestId, long songCode, int percent, string lyricUrl, PreloadState state, MusicContentCenterStateReason reason);
 

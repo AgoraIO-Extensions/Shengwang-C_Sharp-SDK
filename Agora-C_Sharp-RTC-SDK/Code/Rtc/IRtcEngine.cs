@@ -108,7 +108,13 @@ namespace Agora.Rtc
         public abstract IVideoDeviceManager GetVideoDeviceManager();
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Gets the IMusicContentCenter.
+        /// </summary>
+        ///
+        /// <returns>
+        /// An IMusicContentCenter object.
+        /// </returns>
         ///
         public abstract IMusicContentCenter GetMusicContentCenter();
 
@@ -1756,17 +1762,69 @@ namespace Agora.Rtc
         public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool reportVad);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Starts client-side audio recording.
+        /// 
+        /// The SDK supports client-side recording during a call. This method records audio from all users in the channel and generates a recording file that includes all voices. The recording file supports the following formats only:.wav : Large file size, high audio fidelity..aac : Smaller file size, some loss in audio fidelity. Ensure the specified directory exists and is writable. This method must be called after JoinChannel [2/2]. If you are still recording when calling LeaveChannel [2/2], the recording will automatically stop. When calling this method, the default recording sample rate is 32 kHz and cannot be modified.
+        /// </summary>
+        ///
+        /// <param name="filePath"> The absolute path where the recording file is saved locally, including file name and format. For example: C:\music\audio.aac. Ensure the specified path exists and is writable. </param>
+        ///
+        /// <param name="quality"> Recording quality. See AUDIO_RECORDING_QUALITY_TYPE. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int StartAudioRecording(string filePath, AUDIO_RECORDING_QUALITY_TYPE quality);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Starts client-side recording and sets the recording sample rate.
+        /// 
+        /// The SDK supports client-side recording during a call. After calling this method, you can record the audio of all users in the channel and get a recording file containing all users' voices. The recording file supports the following formats only:
+        /// .wav: Large file size with high audio fidelity.
+        /// .aac: Small file size with lower audio fidelity.
+        /// Make sure the path you specify in this method exists and is writable.
+        /// This method must be called after JoinChannel [2/2]. If recording is ongoing when LeaveChannel [2/2] is called, the recording will automatically stop.
+        /// To ensure recording quality, when sampleRate is set to 44.1 kHz or 48 kHz, it is recommended to set quality to AUDIO_RECORDING_QUALITY_MEDIUM or AUDIO_RECORDING_QUALITY_HIGH.
+        /// </summary>
+        ///
+        /// <param name="filePath"> The absolute path where the recording file is saved locally, including the file name and format. For example: C:\music\audio.aac. Make sure the specified path exists and is writable. </param>
+        ///
+        /// <param name="sampleRate">
+        /// Recording sample rate (Hz). You can set it to:
+        /// 16000
+        /// 32000 (default)
+        /// 44100
+        /// 48000
+        /// </param>
+        ///
+        /// <param name="quality"> Recording quality. See AUDIO_RECORDING_QUALITY_TYPE. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int StartAudioRecording(string filePath, int sampleRate, AUDIO_RECORDING_QUALITY_TYPE quality);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Starts client-side recording with configuration.
+        /// 
+        /// The SDK supports client-side recording during a call. After calling this method, you can record the audio of users in the channel and get a recording file. The recording file supports the following formats only:
+        /// WAV: High audio fidelity, large file size. For example, a file with 32000 Hz sample rate and 10 minutes duration is about 73 MB.
+        /// AAC: Lower audio fidelity, smaller file size. For example, a file with 32000 Hz sample rate and AUDIO_RECORDING_QUALITY_MEDIUM quality and 10 minutes duration is about 2 MB. Recording automatically stops when the user leaves the channel.
+        /// </summary>
+        ///
+        /// <param name="config"> Recording configuration. See AudioFileRecordingConfig. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int StartAudioRecording(AudioRecordingConfiguration config);
 
@@ -1790,7 +1848,14 @@ namespace Agora.Rtc
         public abstract int RegisterAudioEncodedFrameObserver(AudioEncodedFrameObserverConfig config, IAudioEncodedFrameObserver observer);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Stops client-side recording.
+        /// </summary>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int StopAudioRecording();
 
@@ -1825,12 +1890,35 @@ namespace Agora.Rtc
         public abstract int DestroyMediaPlayer(IMediaPlayer media_player);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Creates an audio and video recording object.
+        /// 
+        /// Before starting audio and video stream recording, you need to call this method to create a recording object. The SDK supports recording multiple audio and video streams from local or remote users. You can call this method multiple times to create recording objects, and use the info parameter to specify the channel name and user ID to record.
+        /// After successfully creating the object, you need to call SetMediaRecorderObserver to register the observer for the recording object to listen for related callbacks, and then call StartRecording to start recording.
+        /// </summary>
+        ///
+        /// <param name="info"> Information about the audio and video stream to be recorded. See RecorderStreamInfo. </param>
+        ///
+        /// <returns>
+        /// The IMediaRecorder object, if the method call succeeds.
+        /// An empty pointer , if the method call fails.
+        /// </returns>
         ///
         public abstract IMediaRecorder CreateMediaRecorder(RecorderStreamInfo info);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Destroys the audio and video recording object.
+        /// 
+        /// When you no longer need to record audio and video streams, call this method to destroy the corresponding recording object. If you are currently recording, stop recording with StopRecording before calling this method.
+        /// </summary>
+        ///
+        /// <param name="mediaRecorder"> The IMediaRecorder object to be destroyed. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int DestroyMediaRecorder(IMediaRecorder mediaRecorder);
 
@@ -5545,7 +5633,18 @@ namespace Agora.Rtc
         public abstract int SetCloudProxy(CLOUD_PROXY_TYPE proxyType);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Configures the connection to the Agora private media server access module.
+        /// 
+        /// After successfully deploying the Agora private media server and integrating the 4.x RTC SDK on the intranet terminal, you can call this method to specify the Local Access Point and assign the access module to the SDK. This method takes effect only after deploying the Agora hybrid cloud solution. You can [contact sales](https://www.shengwang.cn/contact-sales/) to learn more and deploy the Agora hybrid cloud.
+        /// </summary>
+        ///
+        /// <param name="config"> Local Access Point configuration. See LocalAccessPointConfiguration. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int SetLocalAccessPoint(LocalAccessPointConfiguration config);
 
@@ -5566,7 +5665,20 @@ namespace Agora.Rtc
         public abstract int SetAdvancedAudioOptions(AdvancedAudioOptions options, int sourceType = 0);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Sets audio-video synchronization at the sending end.
+        /// 
+        /// The same user may use two devices to send audio and video streams separately. To ensure audio and video are synchronized at the receiving end, you can call this method on the video sending device and pass in the channel name and user ID of the audio sending device. The SDK will use the timestamp of the sent audio stream as the reference to automatically adjust the video stream, ensuring audio and video are synchronized even when the two sending devices have different uplink network conditions (e.g., using Wi-Fi and 4G respectively). It is recommended to call this method before joining the channel.
+        /// </summary>
+        ///
+        /// <param name="channelId"> The channel name of the audio sending end. </param>
+        ///
+        /// <param name="uid"> The user ID of the audio sending end. </param>
+        ///
+        /// <returns>
+        /// 0: The method call succeeds.
+        /// &lt; 0: The method call fails. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int SetAVSyncSource(string channelId, uint uid);
 

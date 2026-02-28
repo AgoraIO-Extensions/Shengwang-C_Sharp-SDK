@@ -10189,7 +10189,9 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Connection mode with Agora private media server.
+    /// </summary>
     ///
     public enum LOCAL_PROXY_MODE
     {
@@ -10368,39 +10370,53 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Type of video stream to be recorded.
+    /// </summary>
     ///
     public enum RecorderStreamType
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// 0: (Default) In-channel video stream.
+        /// </summary>
         ///
         RTC,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 1: Local preview video stream before joining the channel.
+        /// </summary>
         ///
         PREVIEW,
 
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Information related to the audio and video streams to be recorded.
+    /// </summary>
     ///
     public class RecorderStreamInfo
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Name of the channel to be recorded.
+        /// </summary>
         ///
         public string channelId;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// User ID to be recorded.
+        /// </summary>
         ///
         public uint uid;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Type of the video stream to be recorded. See RecorderStreamType.
+        /// </summary>
         ///
         public RecorderStreamType type;
 

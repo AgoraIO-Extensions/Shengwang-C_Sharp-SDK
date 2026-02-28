@@ -2456,34 +2456,46 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Format of the recorded file.
+    /// </summary>
     ///
     public enum MediaRecorderContainerFormat
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// 1: (Default) MP4.
+        /// </summary>
         ///
         FORMAT_MP4 = 1,
 
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Content to be recorded.
+    /// </summary>
     ///
     public enum MediaRecorderStreamType
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// 1: Audio only.
+        /// </summary>
         ///
         STREAM_TYPE_AUDIO = 0x01,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 2: Video only.
+        /// </summary>
         ///
         STREAM_TYPE_VIDEO = 0x02,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 3: (Default) Audio and video.
+        /// </summary>
         ///
         STREAM_TYPE_BOTH = STREAM_TYPE_AUDIO | STREAM_TYPE_VIDEO,
 
@@ -2564,62 +2576,97 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Configuration for audio and video stream recording.
+    /// </summary>
     ///
     public class MediaRecorderConfiguration
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Make sure the specified path exists and is writable. The absolute path where the recorded file is saved locally, including the file name and format. For example:
+        ///  Windows: C:\Users\<user_name>\AppData\Local\Agora\<process_name>\example.mp4
+        ///  iOS: /App Sandbox/Library/Caches/example.mp4
+        ///  macOS: /Library/Logs/example.mp4
+        ///  Android: /storage/emulated/0/Android/data/<package name>/files/example.mp4
+        /// </summary>
         ///
         public string storagePath;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Format of the recorded file. See MediaRecorderContainerFormat.
+        /// </summary>
         ///
         public MediaRecorderContainerFormat containerFormat;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Content to be recorded. See MediaRecorderStreamType.
+        /// </summary>
         ///
         public MediaRecorderStreamType streamType;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Maximum recording duration in milliseconds. Default is 120000.
+        /// </summary>
         ///
         public int maxDurationMs;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Interval for recording information updates in milliseconds, range [1000,10000]. The SDK triggers the OnRecorderInfoUpdated callback based on this value to report updated recording information.
+        /// </summary>
         ///
         public int recorderInfoUpdateInterval;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Width (px) of the recorded video. The maximum value of width × height should not exceed 3840 × 2160.
+        /// This parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW.
+        /// </summary>
         ///
         public int width;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Height (px) of the recorded video. The maximum value of width × height should not exceed 3840 × 2160.
+        /// This parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW.
+        /// </summary>
         ///
         public int height;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Frame rate of the recorded video. Maximum is 30, e.g., 5, 10, 15, 24, 30.
+        /// This parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW.
+        /// </summary>
         ///
         public int fps;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Sampling rate (Hz) of the recorded audio. Can be set to 16000, 32000, 44100, or 48000.
+        /// This parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW.
+        /// </summary>
         ///
         public int sample_rate;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Number of audio channels:
+        ///  1: Mono
+        ///  2: Stereo This parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW.
+        /// </summary>
         ///
         public int channel_num;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Type of video source to be recorded. See VIDEO_SOURCE_TYPE.
+        /// This parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW.
+        /// </summary>
         ///
         public VIDEO_SOURCE_TYPE videoSourceType;
 
@@ -2670,22 +2717,30 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Information about the recorded file.
+    /// </summary>
     ///
     public class RecorderInfo
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Absolute storage path of the recorded file.
+        /// </summary>
         ///
         public string fileName;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Duration of the recorded file in milliseconds.
+        /// </summary>
         ///
         public uint durationMs;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Size of the recorded file in bytes.
+        /// </summary>
         ///
         public uint fileSize;
 

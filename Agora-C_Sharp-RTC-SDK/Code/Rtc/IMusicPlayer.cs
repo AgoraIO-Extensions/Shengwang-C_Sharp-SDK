@@ -9,17 +9,45 @@ using view_t = System.UInt64;
 namespace Agora.Rtc
 {
     ///
-    /// @ignore
+    /// <summary>
+    /// Inherits from the IMediaPlayer class and provides methods related to the music player.
+    /// </summary>
     ///
     public abstract class IMusicPlayer : IMediaPlayer
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Opens a music resource by its music resource ID.
+        /// 
+        /// Before calling this method, make sure the music resource to be played has been fully loaded. You can call the IsPreloaded method to check whether the music resource has been preloaded, or determine it from the OnPreLoadEvent callback.
+        /// After calling this method, the OnPlayerSourceStateChanged callback is triggered. Once you receive the playback state PLAYER_STATE_OPEN_COMPLETED, you can call the Play method to play the media file. If the music resource you want to open is protected by digital rights management, you must call this method to open it. For unprotected music resources, you can choose to call this method or the Open method under the IMediaPlayer class.
+        /// </summary>
+        ///
+        /// <param name="songCode"> The ID of the music resource, used to identify the music resource. </param>
+        ///
+        /// <param name="startPos"> The starting playback position in milliseconds. Default is 0. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int Open(long songCode, long startPos = 0);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Sets the playback mode of the music content.
+        /// 
+        /// You can call this method to enable original vocals, accompaniment, or guide vocals. If you do not call this method, accompaniment is played by default; if there is no accompaniment, the original vocals are played. You can use the OnMusicCollectionResult callback to obtain detailed information about the music content. The result parameter in the callback indicates the supported playback types of the copyrighted music.
+        /// </summary>
+        ///
+        /// <param name="mode"> Playback mode. See MusicPlayMode. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// -2: Invalid parameter setting. Please reset the parameters.
+        /// </returns>
         ///
         public abstract int SetPlayMode(MusicPlayMode mode);
 
