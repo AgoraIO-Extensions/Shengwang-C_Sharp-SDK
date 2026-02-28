@@ -9,19 +9,43 @@ using view_t = System.UInt64;
 namespace Agora.Rtc
 {
     ///
-    /// @ignore
+    /// <summary>
+    /// Contains events for audio and video recording.
+    /// </summary>
     ///
     public abstract class IMediaRecorderObserver
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Callback when recording state changes.
+        /// 
+        /// When the audio and video stream recording state changes, the SDK triggers this callback to report the current recording state and the reason for the change.
+        /// </summary>
+        ///
+        /// <param name="channelId"> Channel name. </param>
+        ///
+        /// <param name="uid"> User ID. </param>
+        ///
+        /// <param name="state"> Current recording state. See RecorderState. </param>
+        ///
+        /// <param name="reason"> Reason for the recording state error. See RecorderReasonCode. </param>
         ///
         public virtual void OnRecorderStateChanged(string channelId, uint uid, RecorderState state, RecorderReasonCode reason)
         {
         }
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Callback for recording info updates.
+        /// 
+        /// After successfully registering this callback and starting audio and video stream recording, the SDK periodically triggers this callback based on the recorderInfoUpdateInterval value set in MediaRecorderConfiguration, reporting the current recording file name, duration, and size.
+        /// </summary>
+        ///
+        /// <param name="channelId"> Channel name. </param>
+        ///
+        /// <param name="uid"> User ID. </param>
+        ///
+        /// <param name="info"> Recording file information. See RecorderInfo. </param>
         ///
         public virtual void OnRecorderInfoUpdated(string channelId, uint uid, RecorderInfo info)
         {

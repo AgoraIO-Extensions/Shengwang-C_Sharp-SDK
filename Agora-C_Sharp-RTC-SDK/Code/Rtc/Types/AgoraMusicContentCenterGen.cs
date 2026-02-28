@@ -10,113 +10,158 @@ using int16_t = System.Int16;
 namespace Agora.Rtc
 {
     ///
-    /// @ignore
+    /// <summary>
+    /// Playback mode of music resources.
+    /// </summary>
     ///
     public enum MusicPlayMode
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// 0: Original vocal.
+        /// </summary>
         ///
         kMusicPlayModeOriginal = 0,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 1: Accompaniment.
+        /// </summary>
         ///
         kMusicPlayModeAccompany = 1,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 2: Lead vocal.
+        /// </summary>
         ///
         kMusicPlayModeLeadSing = 2,
 
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Music resource preload state.
+    /// </summary>
     ///
     public enum PreloadState
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// 0: Music resource preload completed.
+        /// </summary>
         ///
         kPreloadStateCompleted = 0,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 1: Music resource preload failed.
+        /// </summary>
         ///
         kPreloadStateFailed = 1,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 2: Music resource is preloading.
+        /// </summary>
         ///
         kPreloadStatePreloading = 2,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 3: Cached music resource has been removed.
+        /// </summary>
         ///
         kPreloadStateRemoved = 3,
 
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Request status code of the music content center.
+    /// </summary>
     ///
     public enum MusicContentCenterStateReason
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// 0: Request succeeded.
+        /// </summary>
         ///
         kMusicContentCenterReasonOk = 0,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 1: General error with no specific cause.
+        /// </summary>
         ///
         kMusicContentCenterReasonError = 1,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 2: Gateway error. Possible reasons include:
+        ///  The current Token has expired. Please regenerate the Token.
+        ///  The provided Token is invalid. Make sure you are using an RTM Token.
+        ///  Network error. Please check your network.
+        /// </summary>
         ///
         kMusicContentCenterReasonGateway = 2,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 3: Permission error or music resource does not exist. Make sure your project has enabled the Agora Music Content Center permission. Please [contact technical support](https://ticket.shengwang.cn/).
+        /// </summary>
         ///
         kMusicContentCenterReasonPermissionAndResource = 3,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 4: Internal data parsing error. Please [contact technical support](https://ticket.shengwang.cn/).
+        /// </summary>
         ///
         kMusicContentCenterReasonInternalDataParse = 4,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 5: Error occurred while loading music resource. Please [contact technical support](https://ticket.shengwang.cn/).
+        /// </summary>
         ///
         kMusicContentCenterReasonMusicLoading = 5,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 6: Error occurred while decrypting music resource. Please [contact technical support](https://ticket.shengwang.cn/).
+        /// </summary>
         ///
         kMusicContentCenterReasonMusicDecryption = 6,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 7: Internal HTTP error. Please try again later.
+        /// </summary>
         ///
         kMusicContentCenterReasonHttpInternalError = 7,
 
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Detailed information about the music chart.
+    /// </summary>
     ///
     public class MusicChartInfo
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// The name of the chart.
+        /// </summary>
         ///
         public string chartName;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The ID of the music chart.
+        /// </summary>
         ///
         public int id;
 
@@ -132,34 +177,46 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Cache status of music resources.
+    /// </summary>
     ///
     public enum MUSIC_CACHE_STATUS_TYPE
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// 0: Music resource is cached.
+        /// </summary>
         ///
         MUSIC_CACHE_STATUS_TYPE_CACHED = 0,
 
         ///
-        /// @ignore
+        /// <summary>
+        /// 1: Music resource is being cached.
+        /// </summary>
         ///
         MUSIC_CACHE_STATUS_TYPE_CACHING = 1,
 
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Information about cached music resources.
+    /// </summary>
     ///
     public class MusicCacheInfo
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// The ID of the music resource, used to identify the music resource.
+        /// </summary>
         ///
         public long songCode;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The cache status of the music resource. See MUSIC_CACHE_STATUS_TYPE.
+        /// </summary>
         ///
         public MUSIC_CACHE_STATUS_TYPE status;
 
@@ -203,17 +260,23 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Configuration for music climax segment.
+    /// </summary>
     ///
     public class ClimaxSegment
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Start time of the music climax segment in milliseconds.
+        /// </summary>
         ///
         public int startTimeMs;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// End time of the music climax segment in milliseconds.
+        /// </summary>
         ///
         public int endTimeMs;
 
@@ -229,67 +292,101 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Detailed information about the music resource.
+    /// </summary>
     ///
     public class Music
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// The ID of the music resource, used to identify a music resource.
+        /// </summary>
         ///
         public long songCode;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The name of the music resource.
+        /// </summary>
         ///
         public string name;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The name of the singer.
+        /// </summary>
         ///
         public string singer;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The download URL of the music resource poster.
+        /// </summary>
         ///
         public string poster;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The release time of the music resource.
+        /// </summary>
         ///
         public string releaseTime;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Total duration of the music resource (in seconds).
+        /// </summary>
         ///
         public int durationS;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The type of music resource:
+        ///  1: Mono track with accompaniment on the left channel and original vocals on the right channel.
+        ///  2: Mono track with accompaniment only.
+        ///  3: Mono track with original vocals only.
+        ///  4: Multi-track audio.
+        /// </summary>
         ///
         public int type;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Whether the song supports singing score:
+        ///  1: The song supports singing score.
+        ///  2: The song does not support singing score.
+        /// </summary>
         ///
         public int pitchType;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The number of lyrics in the song.
+        /// </summary>
         ///
         public int lyricCount;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Supported lyric formats:
+        ///  0: xml format.
+        ///  1: lrc format.
+        /// </summary>
         ///
         public int[] lyricList;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The number of climax segments.
+        /// </summary>
         ///
         public int climaxSegmentCount;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// List of music climax segments. See ClimaxSegment.
+        /// </summary>
         ///
         public ClimaxSegment[] climaxSegmentList;
 
@@ -327,27 +424,39 @@ namespace Agora.Rtc
     }
 
     ///
-    /// @ignore
+    /// <summary>
+    /// Settings for the music content center.
+    /// </summary>
     ///
     public class MusicContentCenterConfiguration
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// The App ID of the project with the content center enabled.
+        /// </summary>
         ///
         public string appId;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The RTM Token used for authentication when using the music content center.
+        ///  Agora recommends using AccessToken2 for authentication. See [Deploy Token Server](https://doc.shengwang.cn/doc/rtm2/android/user-guide/token/token-generation). When generating the Token, pass a String type mccUid to uid.
+        ///  When your Token is about to expire, you can call RenewToken to provide a new Token.
+        /// </summary>
         ///
         public string token;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The user ID for using the music content center. This ID can be the same as the uid used when joining an RTC channel, but it must not be 0.
+        /// </summary>
         ///
         public long mccUid;
 
         ///
-        /// @ignore
+        /// <summary>
+        /// The number of music resources that can be cached, with a maximum of 50.
+        /// </summary>
         ///
         public int maxCacheSize;
 

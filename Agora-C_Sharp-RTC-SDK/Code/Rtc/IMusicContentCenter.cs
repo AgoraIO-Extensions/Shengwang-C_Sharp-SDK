@@ -9,93 +9,328 @@ using view_t = System.UInt64;
 namespace Agora.Rtc
 {
     ///
-    /// @ignore
+    /// <summary>
+    /// The IMusicContentCenter interface class provides methods related to the music content center.
+    /// </summary>
     ///
     public abstract class IMusicContentCenter
     {
         ///
-        /// @ignore
+        /// <summary>
+        /// Initializes IMusicContentCenter.
+        /// 
+        /// Before calling other methods under the IMusicContentCenter class, you need to call this method to initialize IMusicContentCenter.
+        /// </summary>
+        ///
+        /// <param name="configuration"> Settings for IMusicContentCenter. See MusicContentCenterConfiguration. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int Initialize(MusicContentCenterConfiguration configuration);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Updates the token.
+        /// 
+        /// When the token used for authentication is about to expire or has expired, you can call this method to pass in a newly generated token.
+        /// </summary>
+        ///
+        /// <param name="token"> The new token. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int RenewToken(string token);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Registers callback events for the music content center.
+        /// </summary>
+        ///
+        /// <param name="eventHandler"> The callback event to be registered. See IMusicContentCenterEventHandler. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int RegisterEventHandler(IMusicContentCenterEventHandler eventHandler);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Unregisters the music content center event callback.
+        /// </summary>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int UnregisterEventHandler();
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Creates a music player.
+        /// 
+        /// If you need to play music resources from the music content center, you must call this method first to create a music player.
+        /// </summary>
+        ///
+        /// <returns>
+        /// If the method call succeeds: returns an IMusicPlayer object.
+        /// If the method call fails: returns a null pointer.
+        /// </returns>
         ///
         public abstract IMusicPlayer CreateMusicPlayer();
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Destroys the music player object.
+        /// 
+        /// When you no longer need to use the music player, you can call this method to destroy the music player object. If you want to use the music player again after destruction, you need to call CreateMusicPlayer to create a new music player object.
+        /// </summary>
+        ///
+        /// <param name="music_player"> IMusicPlayer object. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int DestroyMusicPlayer(IMusicPlayer music_player);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Retrieves all music charts.
+        /// 
+        /// After calling this method, the SDK triggers the OnMusicChartsResult callback to report detailed information about the music charts.
+        /// </summary>
+        ///
+        /// <param name="requestId"> Request ID. A unique identifier for this request. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int GetMusicCharts(ref string requestId);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Retrieves the list of music resources in a specified chart by chart ID.
+        /// 
+        /// After successfully calling this method, the SDK triggers the OnMusicCollectionResult callback to report detailed information about the music resources in the chart.
+        /// </summary>
+        ///
+        /// <param name="requestId"> Request ID. A unique identifier for this request. </param>
+        ///
+        /// <param name="musicChartType"> The ID of the music chart. You can obtain it from the OnMusicChartsResult callback. You can also use the RESTful API to [retrieve the full song list](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E6%9B%B2%E5%BA%93%E6%89%80%E6%9C%89%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8) or [retrieve the incremental song list](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E5%A2%9E%E9%87%8F%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8). </param>
+        ///
+        /// <param name="page"> Current page number, starting from 1 by default. </param>
+        ///
+        /// <param name="pageSize"> Total number of pages in the current music resource list. The maximum value is 50. </param>
+        ///
+        /// <param name="jsonOption"> Extended JSON field, default is null. You can use this field to filter the music resources you need. Currently supports filtering for scoreable music resources and chorus segments: pitchType : Whether the music resource supports scoring. 1 : Scoreable music resources. 2 : Non-scoreable music resources. needHighPart : Whether chorus segment resources are needed. YES : Chorus segment resources are needed. NO : Chorus segment resources are not needed. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int GetMusicCollectionByMusicChartId(ref string requestId, int musicChartId, int page, int pageSize, string jsonOption = "");
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Searches for music content.
+        /// 
+        /// After this method is successfully called, the SDK triggers the OnMusicCollectionResult callback to report the retrieved music content list.
+        /// </summary>
+        ///
+        /// <param name="keyword"> Search keyword. Supports song title and artist name. </param>
+        ///
+        /// <param name="page"> The target page number of the music content list to retrieve. </param>
+        ///
+        /// <param name="pageSize"> Maximum number of music content items per page. The maximum value is 50. </param>
+        ///
+        /// <param name="jsonOption"> Extended JSON field, default is null. You can use this field to filter the music content you need. Currently supports filtering by whether the music is scorable and whether it has a chorus segment: pitchType : Whether the music content supports scoring. 1 : Scorable music content. 2 : Non-scorable music content. needHighPart : Whether a chorus segment is needed. YES : Chorus segment is needed. NO : Chorus segment is not needed. </param>
+        ///
+        /// <param name="requestId"> Request ID. A unique identifier for this request. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int SearchMusic(ref string requestId, string keyWord, int page, int pageSize, string jsonOption = "");
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Preloads a music resource.
+        /// 
+        /// Deprecated Deprecated: This method is obsolete. Use Preload [2/2] instead. You can call this method to preload the music resource you want to play. After the method is successfully called, the SDK triggers the OnPreLoadEvent callback to report the preload event.
+        /// Before calling this method to preload a music resource, you need to call the GetMusicCollectionByMusicChartId or SearchMusic method to get the music resource you want to play, and obtain the music resource code (songCode) through the triggered OnMusicCollectionResult callback. To destroy the IRtcEngine object, call the Dispose method after receiving the OnPreLoadEvent callback.
+        /// </summary>
+        ///
+        /// <param name="songCode"> The code of the music resource, used to identify the music resource. </param>
+        ///
+        /// <param name="jsonOption">
+        /// Extended JSON field.
+        /// Agora charges based on the application scenario you pass in the sceneType field. Different scenarios correspond to different rates. You can refer to the [Billing Description](https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/overview/billing) for detailed billing information.
+        /// 1: Live scenario: Karaoke and background music playback.
+        /// 2: Live scenario: Background music playback.
+        /// 3: (Default) Voice chat scenario: Karaoke.
+        /// 4: Voice chat scenario: Background music playback.
+        /// 5: VR scenario: Karaoke and background music playback. To switch to a different scenario, you need to call this method again and pass the sceneType value in this field. Example: {"sceneType":1}
+        /// </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         [Obsolete("This method is deprecated. Use preload(int64_t songCode) instead.")]
         public abstract int Preload(long songCode, string jsonOption);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Preloads a music resource.
+        /// 
+        /// You can call this method to preload the music resource you want to play. After the method is successfully called, the SDK triggers the OnPreLoadEvent callback to report the preload event.
+        /// Before calling this method to preload a music resource, you need to call the GetMusicCollectionByMusicChartId or SearchMusic method to get the music resource you want to play, and obtain the music resource code (songCode) through the triggered OnMusicCollectionResult callback. To destroy the IRtcEngine object, call the Dispose method after receiving the OnPreLoadEvent callback.
+        /// </summary>
+        ///
+        /// <param name="songCode"> The code of the music resource, used to identify the music resource. </param>
+        ///
+        /// <param name="requestId"> Output parameter. Request ID. A unique identifier for this request. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int Preload(ref string requestId, long songCode);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Deletes a cached music resource.
+        /// 
+        /// You can call this method to delete a cached music resource. To delete multiple music resources, call this method multiple times.
+        /// </summary>
+        ///
+        /// <param name="songCode"> The code of the music resource to be deleted. </param>
+        ///
+        /// <returns>
+        /// 0: Success. The music resource has been deleted.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int RemoveCache(long songCode);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Retrieves information about cached music resources.
+        /// 
+        /// Before calling this method, you need to pre-allocate a certain amount of memory to store information about cached music resources. If you want to set the number of cacheable music resources, you can configure it via the configuration in Initialize.
+        /// When you no longer need the cached music resources, you should release the memory in time to prevent memory leaks.
+        /// </summary>
+        ///
+        /// <param name="cacheInfo"> An output parameter. A pointer to the memory buffer used to store cached music resource information. </param>
+        ///
+        /// <param name="cacheInfoSize">
+        /// Input and output parameter.
+        /// Input: The length of the cacheInfo array, i.e., the number of MusicCacheInfo structures you allocated.
+        /// Output: The number of MusicCacheInfo structures returned after the method execution.
+        /// </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int GetCaches(ref MusicCacheInfo[] cacheInfo, ref int cacheInfoSize);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Checks whether the music resource is preloaded.
+        /// 
+        /// This method is a synchronous call. To preload a new music resource, call Preload [2/2].
+        /// </summary>
+        ///
+        /// <param name="songCode"> The code of the music resource, used to identify a music resource. </param>
+        ///
+        /// <returns>
+        /// 0: Success. The music resource is preloaded.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int IsPreloaded(long songCode);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Retrieves the download URL for the lyrics of a music resource.
+        /// 
+        /// After successfully calling this method, the SDK triggers the OnLyricResult callback to report the download URL of the lyrics.
+        /// </summary>
+        ///
+        /// <param name="songCode"> The ID of the music resource used to identify the music resource. </param>
+        ///
+        /// <param name="lyricType">
+        /// Lyric format type:
+        /// 0: XML format.
+        /// 1: LRC format.
+        /// </param>
+        ///
+        /// <param name="requestId"> Request ID. A unique identifier for this request. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int GetLyric(ref string requestId, long songCode, int lyricType = 0);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Retrieves detailed information of a music resource.
+        /// 
+        /// Before calling this method, you need to obtain the corresponding music resource code. You can call the GetMusicCollectionByMusicChartId or SearchMusic method to get music resources, and obtain the music resource code (songCode) through the triggered OnMusicCollectionResult callback.
+        /// After calling this method, the SDK triggers the OnSongSimpleInfoResult callback to report the detailed information of the music resource.
+        /// </summary>
+        ///
+        /// <param name="songCode"> The code of the music resource, used to identify the music resource. </param>
+        ///
+        /// <param name="requestId"> Request ID. A unique identifier for this request. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int GetSongSimpleInfo(ref string requestId, long songCode);
 
         ///
-        /// @ignore
+        /// <summary>
+        /// Creates a chorus segment ID for a music resource.
+        /// </summary>
+        ///
+        /// <param name="songCode"> The music resource ID used to identify the music resource. You can obtain the music resource by calling GetMusicCollectionByMusicChartId or SearchMusic, and retrieve the songCode from the triggered OnMusicCollectionResult callback. </param>
+        ///
+        /// <param name="jsonOption">
+        /// Agora charges based on the application scenario you pass in sceneType. Different scenarios correspond to different rates. You can refer to the [Billing Instructions](https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/overview/billing) for detailed pricing. If you need to switch to a different scenario, you must call this method again and pass the new sceneType value. Extended JSON field, default is null. Currently supports the following values:
+        /// sceneType: Scene type. 1: Live scene, online karaoke room and background music playback; 2: Live scene, background music playback; 3: (default) Voice chat scene, online karaoke room; 4: Voice chat scene, background music playback; 5: VR scene, online karaoke room and background music playback. Example: {"sceneType":1}.
+        /// highPart: Index of the chorus segment, obtained from the onMusicCollectionResult callback, starting from 0. Example: {"format": {"highpart": 0}}.
+        /// </param>
+        ///
+        /// <param name="internalSongCode"> An output parameter. The internal song ID of the music resource. </param>
+        ///
+        /// <returns>
+        /// 0: Success.
+        /// &lt; 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.
+        /// </returns>
         ///
         public abstract int GetInternalSongCode(long songCode, string jsonOption, ref long internalSongCode);
 

@@ -1438,6 +1438,309 @@
     "is_hide": false
   },
   {
+    "id": "api_imediarecorder_setmediarecorderobserver",
+    "name": "SetMediaRecorderObserver",
+    "description": "Registers the IMediaRecorderObserver observer.\n\nThis method sets the callback for audio and video recording, so that the app can be notified of the recording state and information during the recording process.\nBefore calling this method, ensure that:\n The IRtcEngine object has been created and initialized.\n The recording object has been created using CreateMediaRecorder.",
+    "parameters": [
+      {
+        "callback": "Callback for audio and video stream recording. See IMediaRecorderObserver."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imediarecorder_startrecording",
+    "name": "StartRecording",
+    "description": "Starts audio and video stream recording.\n\nThis method starts audio and video stream recording. The SDK supports recording both local and remote users' audio and video streams.\nBefore starting recording, ensure that:\n You have created a media recorder object via CreateMediaRecorder.\n You have registered a recorder observer via SetMediaRecorderObserver to listen for recording-related callbacks.\n You have joined a channel. This method supports recording the following data:\n Microphone audio in AAC format.\n Camera video in H.264 or H.265 format. After recording starts, if the video resolution changes during recording, the SDK stops recording; if the audio sample rate or channel count changes, the SDK continues recording and generates a single MP4 file. A recording file is generated only when recordable audio or video streams are detected. If no recordable streams are detected, or if the streams are interrupted for more than 5 seconds during recording, the SDK stops recording and triggers the OnRecorderStateChanged (RECORDER_STATE_ERROR, RECORDER_REASON_NO_STREAM) callback.\n If you want to record local audio and video streams, make sure the local user role is set to broadcaster before starting recording.\n If you want to record remote users' audio and video streams, make sure you have subscribed to those streams before starting recording.",
+    "parameters": [
+      {
+        "config": "Audio and video stream recording configuration. See MediaRecorderConfiguration."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.\n -2: Invalid parameter. Make sure:\n The specified recording file path is correct and writable.\n The specified recording file format is correct.\n The maximum recording duration is set correctly.\n -4: The current state of IRtcEngine does not support this operation. Possibly because recording is already in progress or has stopped due to an error.\n -7: IRtcEngine is not initialized before calling this method. Make sure the IMediaRecorder object is created before calling this method.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imediarecorder_stoprecording",
+    "name": "StopRecording",
+    "description": "Stops audio and video stream recording.\n\nAfter calling StartRecording, call this method to stop recording; otherwise, the generated recording file may not play correctly.",
+    "parameters": [],
+    "returns": "0: Success.\n < 0: Failure:\n -7: IRtcEngine is not initialized before calling this method. Make sure the IMediaRecorder object is created before calling this method.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_createmusicplayer",
+    "name": "CreateMusicPlayer",
+    "description": "Creates a music player.\n\nIf you need to play music resources from the music content center, you must call this method first to create a music player.",
+    "parameters": [],
+    "returns": "If the method call succeeds: returns an IMusicPlayer object.\n If the method call fails: returns a null pointer.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_destroymusicplayer",
+    "name": "DestroyMusicPlayer",
+    "description": "Destroys the music player object.\n\nWhen you no longer need to use the music player, you can call this method to destroy the music player object. If you want to use the music player again after destruction, you need to call CreateMusicPlayer to create a new music player object.",
+    "parameters": [
+      {
+        "music_player": "IMusicPlayer object."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_getcaches",
+    "name": "GetCaches",
+    "description": "Retrieves information about cached music resources.\n\nBefore calling this method, you need to pre-allocate a certain amount of memory to store information about cached music resources. If you want to set the number of cacheable music resources, you can configure it via the configuration in Initialize.\nWhen you no longer need the cached music resources, you should release the memory in time to prevent memory leaks.",
+    "parameters": [
+      {
+        "cacheInfo": "An output parameter. A pointer to the memory buffer used to store cached music resource information."
+      },
+      {
+        "cacheInfoSize": "Input and output parameter.\n Input: The length of the cacheInfo array, i.e., the number of MusicCacheInfo structures you allocated.\n Output: The number of MusicCacheInfo structures returned after the method execution."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_getinternalsongcode",
+    "name": "GetInternalSongCode",
+    "description": "Creates a chorus segment ID for a music resource.",
+    "parameters": [
+      {
+        "songCode": "The music resource ID used to identify the music resource. You can obtain the music resource by calling GetMusicCollectionByMusicChartId or SearchMusic, and retrieve the songCode from the triggered OnMusicCollectionResult callback."
+      },
+      {
+        "jsonOption": "Agora charges based on the application scenario you pass in sceneType. Different scenarios correspond to different rates. You can refer to the [Billing Instructions](https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/overview/billing) for detailed pricing. If you need to switch to a different scenario, you must call this method again and pass the new sceneType value. Extended JSON field, default is null. Currently supports the following values:\n sceneType: Scene type. 1: Live scene, online karaoke room and background music playback; 2: Live scene, background music playback; 3: (default) Voice chat scene, online karaoke room; 4: Voice chat scene, background music playback; 5: VR scene, online karaoke room and background music playback. Example: {\"sceneType\":1}.\n highPart: Index of the chorus segment, obtained from the onMusicCollectionResult callback, starting from 0. Example: {\"format\": {\"highpart\": 0}}."
+      },
+      {
+        "internalSongCode": "An output parameter. The internal song ID of the music resource."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_getlyric",
+    "name": "GetLyric",
+    "description": "Retrieves the download URL for the lyrics of a music resource.\n\nAfter successfully calling this method, the SDK triggers the OnLyricResult callback to report the download URL of the lyrics.",
+    "parameters": [
+      {
+        "songCode": "The ID of the music resource used to identify the music resource."
+      },
+      {
+        "lyricType": "Lyric format type:\n 0: XML format.\n 1: LRC format."
+      },
+      {
+        "requestId": "Request ID. A unique identifier for this request."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_getmusiccharts",
+    "name": "GetMusicCharts",
+    "description": "Retrieves all music charts.\n\nAfter calling this method, the SDK triggers the OnMusicChartsResult callback to report detailed information about the music charts.",
+    "parameters": [
+      {
+        "requestId": "Request ID. A unique identifier for this request."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_getmusiccollectionbymusicchartid",
+    "name": "GetMusicCollectionByMusicChartId",
+    "description": "Retrieves the list of music resources in a specified chart by chart ID.\n\nAfter successfully calling this method, the SDK triggers the OnMusicCollectionResult callback to report detailed information about the music resources in the chart.",
+    "parameters": [
+      {
+        "requestId": "Request ID. A unique identifier for this request."
+      },
+      {
+        "musicChartType": "The ID of the music chart. You can obtain it from the OnMusicChartsResult callback. You can also use the RESTful API to [retrieve the full song list](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E6%9B%B2%E5%BA%93%E6%89%80%E6%9C%89%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8) or [retrieve the incremental song list](https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/music-content-center#%E8%8E%B7%E5%8F%96%E5%A2%9E%E9%87%8F%E6%AD%8C%E6%9B%B2%E5%88%97%E8%A1%A8)."
+      },
+      {
+        "page": "Current page number, starting from 1 by default."
+      },
+      {
+        "pageSize": "Total number of pages in the current music resource list. The maximum value is 50."
+      },
+      {
+        "jsonOption": "Extended JSON field, default is null. You can use this field to filter the music resources you need. Currently supports filtering for scoreable music resources and chorus segments: pitchType : Whether the music resource supports scoring. 1 : Scoreable music resources. 2 : Non-scoreable music resources. needHighPart : Whether chorus segment resources are needed. YES : Chorus segment resources are needed. NO : Chorus segment resources are not needed."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_getsongsimpleinfo",
+    "name": "GetSongSimpleInfo",
+    "description": "Retrieves detailed information of a music resource.\n\nBefore calling this method, you need to obtain the corresponding music resource code. You can call the GetMusicCollectionByMusicChartId or SearchMusic method to get music resources, and obtain the music resource code (songCode) through the triggered OnMusicCollectionResult callback.\nAfter calling this method, the SDK triggers the OnSongSimpleInfoResult callback to report the detailed information of the music resource.",
+    "parameters": [
+      {
+        "songCode": "The code of the music resource, used to identify the music resource."
+      },
+      {
+        "requestId": "Request ID. A unique identifier for this request."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_initialize",
+    "name": "Initialize",
+    "description": "Initializes IMusicContentCenter.\n\nBefore calling other methods under the IMusicContentCenter class, you need to call this method to initialize IMusicContentCenter.",
+    "parameters": [
+      {
+        "configuration": "Settings for IMusicContentCenter. See MusicContentCenterConfiguration."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_ispreloaded",
+    "name": "IsPreloaded",
+    "description": "Checks whether the music resource is preloaded.\n\nThis method is a synchronous call. To preload a new music resource, call Preload [2/2].",
+    "parameters": [
+      {
+        "songCode": "The code of the music resource, used to identify a music resource."
+      }
+    ],
+    "returns": "0: Success. The music resource is preloaded.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_preload",
+    "name": "Preload [1/2]",
+    "description": "Preloads a music resource.\n\nDeprecated Deprecated: This method is obsolete. Use Preload [2/2] instead. You can call this method to preload the music resource you want to play. After the method is successfully called, the SDK triggers the OnPreLoadEvent callback to report the preload event.\nBefore calling this method to preload a music resource, you need to call the GetMusicCollectionByMusicChartId or SearchMusic method to get the music resource you want to play, and obtain the music resource code (songCode) through the triggered OnMusicCollectionResult callback. To destroy the IRtcEngine object, call the Dispose method after receiving the OnPreLoadEvent callback.",
+    "parameters": [
+      {
+        "songCode": "The code of the music resource, used to identify the music resource."
+      },
+      {
+        "jsonOption": "Extended JSON field.\nAgora charges based on the application scenario you pass in the sceneType field. Different scenarios correspond to different rates. You can refer to the [Billing Description](https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/overview/billing) for detailed billing information.\n 1: Live scenario: Karaoke and background music playback.\n 2: Live scenario: Background music playback.\n 3: (Default) Voice chat scenario: Karaoke.\n 4: Voice chat scenario: Background music playback.\n 5: VR scenario: Karaoke and background music playback. To switch to a different scenario, you need to call this method again and pass the sceneType value in this field. Example: {\"sceneType\":1}"
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_preload2",
+    "name": "Preload [2/2]",
+    "description": "Preloads a music resource.\n\nYou can call this method to preload the music resource you want to play. After the method is successfully called, the SDK triggers the OnPreLoadEvent callback to report the preload event.\nBefore calling this method to preload a music resource, you need to call the GetMusicCollectionByMusicChartId or SearchMusic method to get the music resource you want to play, and obtain the music resource code (songCode) through the triggered OnMusicCollectionResult callback. To destroy the IRtcEngine object, call the Dispose method after receiving the OnPreLoadEvent callback.",
+    "parameters": [
+      {
+        "songCode": "The code of the music resource, used to identify the music resource."
+      },
+      {
+        "requestId": "Output parameter. Request ID. A unique identifier for this request."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_registereventhandler",
+    "name": "RegisterEventHandler",
+    "description": "Registers callback events for the music content center.",
+    "parameters": [
+      {
+        "eventHandler": "The callback event to be registered. See IMusicContentCenterEventHandler."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_removecache",
+    "name": "RemoveCache",
+    "description": "Deletes a cached music resource.\n\nYou can call this method to delete a cached music resource. To delete multiple music resources, call this method multiple times.",
+    "parameters": [
+      {
+        "songCode": "The code of the music resource to be deleted."
+      }
+    ],
+    "returns": "0: Success. The music resource has been deleted.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_renewtoken",
+    "name": "RenewToken",
+    "description": "Updates the token.\n\nWhen the token used for authentication is about to expire or has expired, you can call this method to pass in a newly generated token.",
+    "parameters": [
+      {
+        "token": "The new token."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_searchmusic",
+    "name": "SearchMusic",
+    "description": "Searches for music content.\n\nAfter this method is successfully called, the SDK triggers the OnMusicCollectionResult callback to report the retrieved music content list.",
+    "parameters": [
+      {
+        "keyword": "Search keyword. Supports song title and artist name."
+      },
+      {
+        "page": "The target page number of the music content list to retrieve."
+      },
+      {
+        "pageSize": "Maximum number of music content items per page. The maximum value is 50."
+      },
+      {
+        "jsonOption": "Extended JSON field, default is null. You can use this field to filter the music content you need. Currently supports filtering by whether the music is scorable and whether it has a chorus segment: pitchType : Whether the music content supports scoring. 1 : Scorable music content. 2 : Non-scorable music content. needHighPart : Whether a chorus segment is needed. YES : Chorus segment is needed. NO : Chorus segment is not needed."
+      },
+      {
+        "requestId": "Request ID. A unique identifier for this request."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusiccontentcenter_unregistereventhandler",
+    "name": "UnregisterEventHandler",
+    "description": "Unregisters the music content center event callback.",
+    "parameters": [],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusicplayer_open",
+    "name": "Open",
+    "description": "Opens a music resource by its music resource ID.\n\nBefore calling this method, make sure the music resource to be played has been fully loaded. You can call the IsPreloaded method to check whether the music resource has been preloaded, or determine it from the OnPreLoadEvent callback.\nAfter calling this method, the OnPlayerSourceStateChanged callback is triggered. Once you receive the playback state PLAYER_STATE_OPEN_COMPLETED, you can call the Play method to play the media file. If the music resource you want to open is protected by digital rights management, you must call this method to open it. For unprotected music resources, you can choose to call this method or the Open method under the IMediaPlayer class.",
+    "parameters": [
+      {
+        "songCode": "The ID of the music resource, used to identify the music resource."
+      },
+      {
+        "startPos": "The starting playback position in milliseconds. Default is 0."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_imusicplayer_setplaymode",
+    "name": "SetPlayMode",
+    "description": "Sets the playback mode of the music content.\n\nYou can call this method to enable original vocals, accompaniment, or guide vocals. If you do not call this method, accompaniment is played by default; if there is no accompaniment, the original vocals are played. You can use the OnMusicCollectionResult callback to obtain detailed information about the music content. The result parameter in the callback indicates the supported playback types of the copyrighted music.",
+    "parameters": [
+      {
+        "mode": "Playback mode. See MusicPlayMode."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.\n -2: Invalid parameter setting. Please reset the parameters.",
+    "is_hide": false
+  },
+  {
     "id": "api_irtcengine_addhandler",
     "name": "InitEventHandler",
     "description": "Adds the main callback event.\n\nThe interface class IRtcEngineEventHandler is used by the SDK to send callback event notifications to the App. The App receives SDK event notifications by inheriting methods of this interface class.\nAll methods of the interface class have default (empty) implementations. The App can choose to inherit only the events it cares about. In the callback methods, the App should not perform time-consuming operations or call APIs that may cause blocking (such as SendStreamMessage),\nas this may affect the operation of the SDK.",
@@ -1702,6 +2005,18 @@
     "is_hide": false
   },
   {
+    "id": "api_irtcengine_createmediarecorder",
+    "name": "CreateMediaRecorder",
+    "description": "Creates an audio and video recording object.\n\nBefore starting audio and video stream recording, you need to call this method to create a recording object. The SDK supports recording multiple audio and video streams from local or remote users. You can call this method multiple times to create recording objects, and use the info parameter to specify the channel name and user ID to record.\nAfter successfully creating the object, you need to call SetMediaRecorderObserver to register the observer for the recording object to listen for related callbacks, and then call StartRecording to start recording.",
+    "parameters": [
+      {
+        "info": "Information about the audio and video stream to be recorded. See RecorderStreamInfo."
+      }
+    ],
+    "returns": "The IMediaRecorder object, if the method call succeeds.\n An empty pointer , if the method call fails.",
+    "is_hide": false
+  },
+  {
     "id": "api_irtcengine_createvideoeffectobject",
     "name": "CreateVideoEffectObject",
     "description": "Creates an IVideoEffectObject video effect object.\n\nSince Available since v4.6.2.",
@@ -1738,6 +2053,18 @@
       }
     ],
     "returns": "≥ 0: Success, returns the media player ID\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_irtcengine_destroymediarecorder",
+    "name": "DestroyMediaRecorder",
+    "description": "Destroys the audio and video recording object.\n\nWhen you no longer need to record audio and video streams, call this method to destroy the corresponding recording object. If you are currently recording, stop recording with StopRecording before calling this method.",
+    "parameters": [
+      {
+        "mediaRecorder": "The IMediaRecorder object to be destroyed."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
     "is_hide": false
   },
   {
@@ -2309,6 +2636,14 @@
     "description": "Gets the ILocalSpatialAudioEngine object.\n\nThis method must be called after initializing the IRtcEngine object.",
     "parameters": [],
     "returns": "An ILocalSpatialAudioEngine object.",
+    "is_hide": false
+  },
+  {
+    "id": "api_irtcengine_getmusiccontentcenter",
+    "name": "GetMusicContentCenter",
+    "description": "Gets the IMusicContentCenter.",
+    "parameters": [],
+    "returns": "An IMusicContentCenter object.",
     "is_hide": false
   },
   {
@@ -3291,6 +3626,21 @@
     "is_hide": false
   },
   {
+    "id": "api_irtcengine_setavsyncsource",
+    "name": "SetAVSyncSource",
+    "description": "Sets audio-video synchronization at the sending end.\n\nThe same user may use two devices to send audio and video streams separately. To ensure audio and video are synchronized at the receiving end, you can call this method on the video sending device and pass in the channel name and user ID of the audio sending device. The SDK will use the timestamp of the sent audio stream as the reference to automatically adjust the video stream, ensuring audio and video are synchronized even when the two sending devices have different uplink network conditions (e.g., using Wi-Fi and 4G respectively). It is recommended to call this method before joining the channel.",
+    "parameters": [
+      {
+        "channelId": "The channel name of the audio sending end."
+      },
+      {
+        "uid": "The user ID of the audio sending end."
+      }
+    ],
+    "returns": "0: The method call succeeds.\n < 0: The method call fails. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
     "id": "api_irtcengine_setbeautyeffectoptions",
     "name": "SetBeautyEffectOptions",
     "description": "Sets beauty effect options.\n\nEnables the local beauty effect and sets the beauty effect options.\n This method depends on the video enhancement dynamic library libagora_clear_vision_extension.dll. Removing this library will cause this feature to fail.\n This feature has high performance requirements for the device. When calling this method, the SDK automatically checks the current device capabilities.",
@@ -3776,6 +4126,18 @@
       }
     ],
     "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.\n -2: Invalid parameter setting, e.g., in-ear monitoring volume is out of range (< 0 or > 400).",
+    "is_hide": false
+  },
+  {
+    "id": "api_irtcengine_setlocalaccesspoint",
+    "name": "SetLocalAccessPoint",
+    "description": "Configures the connection to the Agora private media server access module.\n\nAfter successfully deploying the Agora private media server and integrating the 4.x RTC SDK on the intranet terminal, you can call this method to specify the Local Access Point and assign the access module to the SDK. This method takes effect only after deploying the Agora hybrid cloud solution. You can [contact sales](https://www.shengwang.cn/contact-sales/) to learn more and deploy the Agora hybrid cloud.",
+    "parameters": [
+      {
+        "config": "Local Access Point configuration. See LocalAccessPointConfiguration."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
     "is_hide": false
   },
   {
@@ -4460,6 +4822,51 @@
     "is_hide": false
   },
   {
+    "id": "api_irtcengine_startaudiorecording1",
+    "name": "StartAudioRecording [1/3]",
+    "description": "Starts client-side audio recording.\n\nThe SDK supports client-side recording during a call. This method records audio from all users in the channel and generates a recording file that includes all voices. The recording file supports the following formats only:.wav : Large file size, high audio fidelity..aac : Smaller file size, some loss in audio fidelity. Ensure the specified directory exists and is writable. This method must be called after JoinChannel [2/2]. If you are still recording when calling LeaveChannel [2/2], the recording will automatically stop. When calling this method, the default recording sample rate is 32 kHz and cannot be modified.",
+    "parameters": [
+      {
+        "filePath": "The absolute path where the recording file is saved locally, including file name and format. For example: C:\\music\\audio.aac. Ensure the specified path exists and is writable."
+      },
+      {
+        "quality": "Recording quality. See AUDIO_RECORDING_QUALITY_TYPE."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_irtcengine_startaudiorecording2",
+    "name": "StartAudioRecording [2/3]",
+    "description": "Starts client-side recording and sets the recording sample rate.\n\nThe SDK supports client-side recording during a call. After calling this method, you can record the audio of all users in the channel and get a recording file containing all users' voices. The recording file supports the following formats only:\n .wav: Large file size with high audio fidelity.\n .aac: Small file size with lower audio fidelity.\n Make sure the path you specify in this method exists and is writable.\n This method must be called after JoinChannel [2/2]. If recording is ongoing when LeaveChannel [2/2] is called, the recording will automatically stop.\n To ensure recording quality, when sampleRate is set to 44.1 kHz or 48 kHz, it is recommended to set quality to AUDIO_RECORDING_QUALITY_MEDIUM or AUDIO_RECORDING_QUALITY_HIGH.",
+    "parameters": [
+      {
+        "filePath": "The absolute path where the recording file is saved locally, including the file name and format. For example: C:\\music\\audio.aac. Make sure the specified path exists and is writable."
+      },
+      {
+        "sampleRate": "Recording sample rate (Hz). You can set it to:\n 16000\n 32000 (default)\n 44100\n 48000"
+      },
+      {
+        "quality": "Recording quality. See AUDIO_RECORDING_QUALITY_TYPE."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
+    "id": "api_irtcengine_startaudiorecording3",
+    "name": "StartAudioRecording [3/3]",
+    "description": "Starts client-side recording with configuration.\n\nThe SDK supports client-side recording during a call. After calling this method, you can record the audio of users in the channel and get a recording file. The recording file supports the following formats only:\n WAV: High audio fidelity, large file size. For example, a file with 32000 Hz sample rate and 10 minutes duration is about 73 MB.\n AAC: Lower audio fidelity, smaller file size. For example, a file with 32000 Hz sample rate and AUDIO_RECORDING_QUALITY_MEDIUM quality and 10 minutes duration is about 2 MB. Recording automatically stops when the user leaves the channel.",
+    "parameters": [
+      {
+        "config": "Recording configuration. See AudioFileRecordingConfig."
+      }
+    ],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
+    "is_hide": false
+  },
+  {
     "id": "api_irtcengine_startcameracapture",
     "name": "StartCameraCapture",
     "description": "Starts video capture using the camera.\n\nYou can call this method to start multiple camera captures simultaneously by specifying sourceType. On iOS, to enable multiple camera captures, you must call EnableMultiCamera and set enabled to true before calling this method.",
@@ -4717,6 +5124,14 @@
     "description": "Stops playing the music file.\n\nAfter calling the StartAudioMixing [2/2] method to play a music file, call this method to stop playback. To pause playback, call PauseAudioMixing.",
     "parameters": [],
     "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and troubleshooting.",
+    "is_hide": false
+  },
+  {
+    "id": "api_irtcengine_stopaudiorecording",
+    "name": "StopAudioRecording",
+    "description": "Stops client-side recording.",
+    "parameters": [],
+    "returns": "0: Success.\n < 0: Failure. See [Error Codes](https://docs.agora.io/en/video-calling/troubleshooting/error-codes) for details and resolution suggestions.",
     "is_hide": false
   },
   {
@@ -6496,6 +6911,45 @@
     "is_hide": false
   },
   {
+    "id": "callback_imediarecorderobserver_onrecorderinfoupdated",
+    "name": "OnRecorderInfoUpdated",
+    "description": "Callback for recording info updates.\n\nAfter successfully registering this callback and starting audio and video stream recording, the SDK periodically triggers this callback based on the recorderInfoUpdateInterval value set in MediaRecorderConfiguration, reporting the current recording file name, duration, and size.",
+    "parameters": [
+      {
+        "channelId": "Channel name."
+      },
+      {
+        "uid": "User ID."
+      },
+      {
+        "info": "Recording file information. See RecorderInfo."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "callback_imediarecorderobserver_onrecorderstatechanged",
+    "name": "OnRecorderStateChanged",
+    "description": "Callback when recording state changes.\n\nWhen the audio and video stream recording state changes, the SDK triggers this callback to report the current recording state and the reason for the change.",
+    "parameters": [
+      {
+        "channelId": "Channel name."
+      },
+      {
+        "uid": "User ID."
+      },
+      {
+        "state": "Current recording state. See RecorderState."
+      },
+      {
+        "reason": "Reason for the recording state error. See RecorderReasonCode."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
     "id": "callback_imetadataobserver_onmetadatareceived",
     "name": "OnMetadataReceived",
     "description": "Occurs when metadata is received on the receiving end.",
@@ -6520,6 +6974,111 @@
       }
     ],
     "returns": "true : Send false : Do not send",
+    "is_hide": false
+  },
+  {
+    "id": "callback_imusiccontentcentereventhandler_onlyricresult",
+    "name": "OnLyricResult",
+    "description": "Callback for lyric download URL.\n\nAfter you call GetLyric to obtain the lyric download URL for a specified song, the SDK triggers this callback.",
+    "parameters": [
+      {
+        "requestId": "Request ID. A unique identifier for this request."
+      },
+      {
+        "songCode": "The identifier of the music content."
+      },
+      {
+        "lyricUrl": "The download URL for the lyrics."
+      },
+      {
+        "reason": "The request status code from the music content center. See MusicContentCenterStateReason."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "callback_imusiccontentcentereventhandler_onmusicchartsresult",
+    "name": "OnMusicChartsResult",
+    "description": "Callback for retrieving music charts.\n\nAfter you call the GetMusicCharts method to retrieve all music charts, the SDK triggers this callback.",
+    "parameters": [
+      {
+        "requestId": "Request ID. A unique identifier for this request."
+      },
+      {
+        "reason": "The request status code from the music content center. See MusicContentCenterStateReason."
+      },
+      {
+        "result": "The list of currently available music charts. See MusicChartInfo."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "callback_imusiccontentcentereventhandler_onmusiccollectionresult",
+    "name": "OnMusicCollectionResult",
+    "description": "Callback for retrieving music content list.\n\nWhen you call the GetMusicCollectionByMusicChartId method to retrieve the music content list for a specific chart, or call SearchMusic to search for music content, the SDK triggers this callback to report detailed information about the music content list in the chart.",
+    "parameters": [
+      {
+        "requestId": "Request ID. A unique identifier for this request."
+      },
+      {
+        "reason": "The request status code from the music content center. See MusicContentCenterStateReason."
+      },
+      {
+        "result": "Detailed information about the music content list. See MusicCollection."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "callback_imusiccontentcentereventhandler_onpreloadevent",
+    "name": "OnPreLoadEvent",
+    "description": "Reports events of preloading music resources.\n\nAfter you call the Preload [1/2] or Preload [2/2] method to preload music resources, the SDK triggers this callback.",
+    "parameters": [
+      {
+        "requestId": "The request ID. A unique identifier for this request."
+      },
+      {
+        "songCode": "The ID of the music resource, used to identify a music resource."
+      },
+      {
+        "percent": "The current loading progress of the music resource, ranging from [0,100]."
+      },
+      {
+        "lyricUrl": "The download URL of the lyrics."
+      },
+      {
+        "state": "The current loading state of the music resource. See PreloadState."
+      },
+      {
+        "reason": "The request status code of the Music Content Center. See MusicContentCenterStateReason."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "callback_imusiccontentcentereventhandler_onsongsimpleinforesult",
+    "name": "OnSongSimpleInfoResult",
+    "description": "Callback for detailed information of a music resource.\n\nAfter you call GetSongSimpleInfo to retrieve detailed information of a music resource, the SDK triggers this callback.",
+    "parameters": [
+      {
+        "requestId": "The request ID. A unique identifier for this request."
+      },
+      {
+        "songCode": "The ID of the music resource, used to identify the music resource."
+      },
+      {
+        "simpleInfo": "Information related to the music resource, including:\n Start and end time (ms) of the chorus segment\n Download URL of the chorus lyrics\n Duration (ms) of the chorus segment\n Song name\n Artist name"
+      },
+      {
+        "reason": "The request status code of the Music Content Center. See MusicContentCenterStateReason."
+      }
+    ],
+    "returns": "",
     "is_hide": false
   },
   {
@@ -8576,6 +9135,21 @@
     "is_hide": false
   },
   {
+    "id": "class_climaxsegment",
+    "name": "ClimaxSegment",
+    "description": "Configuration for music climax segment.",
+    "parameters": [
+      {
+        "startTimeMs": "Start time of the music climax segment in milliseconds."
+      },
+      {
+        "endTimeMs": "End time of the music climax segment in milliseconds."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
     "id": "class_codeccapinfo",
     "name": "CodecCapInfo",
     "description": "Information about codec capabilities supported by the SDK.",
@@ -9156,9 +9730,49 @@
     "is_hide": false
   },
   {
+    "id": "class_imediarecorder",
+    "name": "IMediaRecorder",
+    "description": "A class that provides local and remote audio and video recording capabilities.",
+    "parameters": [],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_imediarecorderobserver",
+    "name": "IMediaRecorderObserver",
+    "description": "Contains events for audio and video recording.",
+    "parameters": [],
+    "returns": "",
+    "is_hide": false
+  },
+  {
     "id": "class_imetadataobserver",
     "name": "IMetadataObserver",
     "description": "Metadata observer.",
+    "parameters": [],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_imusiccontentcenter",
+    "name": "IMusicContentCenter",
+    "description": "The IMusicContentCenter interface class provides methods related to the music content center.",
+    "parameters": [],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_imusiccontentcentereventhandler",
+    "name": "IMusicContentCenterEventHandler",
+    "description": "The IMusicContentCenterEventHandler interface class is used by the SDK to send music content center event notifications to the client.",
+    "parameters": [],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_imusicplayer",
+    "name": "IMusicPlayer",
+    "description": "Inherits from the IMediaPlayer class and provides methods related to the music player.",
     "parameters": [],
     "returns": "",
     "is_hide": false
@@ -9631,6 +10245,48 @@
     "is_hide": false
   },
   {
+    "id": "class_mediarecorderconfiguration",
+    "name": "MediaRecorderConfiguration",
+    "description": "Configuration for audio and video stream recording.",
+    "parameters": [
+      {
+        "storagePath": "Make sure the specified path exists and is writable. The absolute path where the recorded file is saved locally, including the file name and format. For example:\n Windows: C:\\Users\\<user_name>\\AppData\\Local\\Agora\\<process_name>\\example.mp4\n iOS: /App Sandbox/Library/Caches/example.mp4\n macOS: /Library/Logs/example.mp4\n Android: /storage/emulated/0/Android/data/<package name>/files/example.mp4"
+      },
+      {
+        "containerFormat": "Format of the recorded file. See MediaRecorderContainerFormat."
+      },
+      {
+        "streamType": "Content to be recorded. See MediaRecorderStreamType."
+      },
+      {
+        "maxDurationMs": "Maximum recording duration in milliseconds. Default is 120000."
+      },
+      {
+        "recorderInfoUpdateInterval": "Interval for recording information updates in milliseconds, range [1000,10000]. The SDK triggers the OnRecorderInfoUpdated callback based on this value to report updated recording information."
+      },
+      {
+        "width": "Width (px) of the recorded video. The maximum value of width × height should not exceed 3840 × 2160.\nThis parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW."
+      },
+      {
+        "height": "Height (px) of the recorded video. The maximum value of width × height should not exceed 3840 × 2160.\nThis parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW."
+      },
+      {
+        "fps": "Frame rate of the recorded video. Maximum is 30, e.g., 5, 10, 15, 24, 30.\nThis parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW."
+      },
+      {
+        "sample_rate": "Sampling rate (Hz) of the recorded audio. Can be set to 16000, 32000, 44100, or 48000.\nThis parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW."
+      },
+      {
+        "channel_num": "Number of audio channels:\n 1: Mono\n 2: Stereo This parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW."
+      },
+      {
+        "videoSourceType": "Type of video source to be recorded. See VIDEO_SOURCE_TYPE.\nThis parameter is required only when calling CreateMediaRecorder and setting type in RecorderStreamInfo to PREVIEW."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
     "id": "class_mediasource",
     "name": "MediaSource",
     "description": "Information and playback settings for the media file to be played.",
@@ -9718,6 +10374,126 @@
       },
       {
         "pathStats": "Array of statistics for each active transmission path. See PathStats."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_music",
+    "name": "Music",
+    "description": "Detailed information about the music resource.",
+    "parameters": [
+      {
+        "songCode": "The ID of the music resource, used to identify a music resource."
+      },
+      {
+        "name": "The name of the music resource."
+      },
+      {
+        "singer": "The name of the singer."
+      },
+      {
+        "poster": "The download URL of the music resource poster."
+      },
+      {
+        "releaseTime": "The release time of the music resource."
+      },
+      {
+        "type": "The type of music resource:\n 1: Mono track with accompaniment on the left channel and original vocals on the right channel.\n 2: Mono track with accompaniment only.\n 3: Mono track with original vocals only.\n 4: Multi-track audio."
+      },
+      {
+        "pitchType": "Whether the song supports singing score:\n 1: The song supports singing score.\n 2: The song does not support singing score."
+      },
+      {
+        "durationS": "Total duration of the music resource (in seconds)."
+      },
+      {
+        "lyricList": "Supported lyric formats:\n 0: xml format.\n 1: lrc format."
+      },
+      {
+        "climaxSegmentList": "List of music climax segments. See ClimaxSegment."
+      },
+      {
+        "lyricCount": "The number of lyrics in the song."
+      },
+      {
+        "climaxSegmentCount": "The number of climax segments."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_musiccacheinfo",
+    "name": "MusicCacheInfo",
+    "description": "Information about cached music resources.",
+    "parameters": [
+      {
+        "songCode": "The ID of the music resource, used to identify the music resource."
+      },
+      {
+        "status": "The cache status of the music resource. See MUSIC_CACHE_STATUS_TYPE."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_musicchartinfo",
+    "name": "MusicChartInfo",
+    "description": "Detailed information about the music chart.",
+    "parameters": [
+      {
+        "chartName": "The name of the chart."
+      },
+      {
+        "id": "The ID of the music chart."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_musiccollection",
+    "name": "MusicCollection",
+    "description": "Detailed information about the music resource list.",
+    "parameters": [
+      {
+        "count": "The number of music items in the music resource list for this request."
+      },
+      {
+        "total": "The total number of music resources in the list."
+      },
+      {
+        "page": "The current page number, starting from 1 by default."
+      },
+      {
+        "pageSize": "The total number of pages in the current music resource list, with a maximum value of 50."
+      },
+      {
+        "musicList": "Detailed information about the music resources on the current page. See Music."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_musiccontentcenterconfiguration",
+    "name": "MusicContentCenterConfiguration",
+    "description": "Settings for the music content center.",
+    "parameters": [
+      {
+        "appId": "The App ID of the project with the content center enabled."
+      },
+      {
+        "token": "The RTM Token used for authentication when using the music content center.\n Agora recommends using AccessToken2 for authentication. See [Deploy Token Server](https://doc.shengwang.cn/doc/rtm2/android/user-guide/token/token-generation). When generating the Token, pass a String type mccUid to uid.\n When your Token is about to expire, you can call RenewToken to provide a new Token."
+      },
+      {
+        "mccUid": "The user ID for using the music content center. This ID can be the same as the uid used when joining an RTC channel, but it must not be 0."
+      },
+      {
+        "maxCacheSize": "The number of music resources that can be cached, with a maximum of 50."
       }
     ],
     "returns": "",
@@ -9832,6 +10608,42 @@
       },
       {
         "audioBitsPerSample": "Number of bits per audio sample (bit)."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_recorderinfo",
+    "name": "RecorderInfo",
+    "description": "Information about the recorded file.",
+    "parameters": [
+      {
+        "fileName": "Absolute storage path of the recorded file."
+      },
+      {
+        "durationMs": "Duration of the recorded file in milliseconds."
+      },
+      {
+        "fileSize": "Size of the recorded file in bytes."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "class_recorderstreaminfo",
+    "name": "RecorderStreamInfo",
+    "description": "Information related to the audio and video streams to be recorded.",
+    "parameters": [
+      {
+        "channelId": "Name of the channel to be recorded."
+      },
+      {
+        "uid": "User ID to be recorded."
+      },
+      {
+        "type": "Type of the video stream to be recorded. See RecorderStreamType."
       }
     ],
     "returns": "",
@@ -12870,6 +13682,21 @@
     "is_hide": false
   },
   {
+    "id": "enum_localproxymode",
+    "name": "LOCAL_PROXY_MODE",
+    "description": "Connection mode with Agora private media server.",
+    "parameters": [
+      {
+        "kConnectivityFirst": "0: The SDK first tries to connect to the specified Agora private media server; if it fails, it connects to Agora SD-RTN™."
+      },
+      {
+        "kLocalOnly": "1: The SDK only tries to connect to the specified Agora private media server."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
     "id": "enum_localvideoeventtype",
     "name": "LOCAL_VIDEO_EVENT_TYPE",
     "description": "Local video event types.\n\nSince Available since v4.6.1.",
@@ -13290,6 +14117,36 @@
     "is_hide": false
   },
   {
+    "id": "enum_mediarecordercontainerformat",
+    "name": "MediaRecorderContainerFormat",
+    "description": "Format of the recorded file.",
+    "parameters": [
+      {
+        "FORMAT_MP4": "1: (Default) MP4."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "enum_mediarecorderstreamtype",
+    "name": "MediaRecorderStreamType",
+    "description": "Content to be recorded.",
+    "parameters": [
+      {
+        "STREAM_TYPE_AUDIO": "1: Audio only."
+      },
+      {
+        "STREAM_TYPE_VIDEO": "2: Video only."
+      },
+      {
+        "STREAM_TYPE_BOTH": "3: (Default) Audio and video."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
     "id": "enum_mediasourcetype",
     "name": "MEDIA_SOURCE_TYPE",
     "description": "Media source type.",
@@ -13407,6 +14264,72 @@
     "is_hide": false
   },
   {
+    "id": "enum_musiccachestatustype",
+    "name": "MUSIC_CACHE_STATUS_TYPE",
+    "description": "Cache status of music resources.",
+    "parameters": [
+      {
+        "MUSIC_CACHE_STATUS_TYPE_CACHED": "0: Music resource is cached."
+      },
+      {
+        "MUSIC_CACHE_STATUS_TYPE_CACHING": "1: Music resource is being cached."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "enum_musiccontentcenterstatereason",
+    "name": "MusicContentCenterStateReason",
+    "description": "Request status code of the music content center.",
+    "parameters": [
+      {
+        "kMusicContentCenterReasonOk": "0: Request succeeded."
+      },
+      {
+        "kMusicContentCenterReasonError": "1: General error with no specific cause."
+      },
+      {
+        "kMusicContentCenterReasonGateway": "2: Gateway error. Possible reasons include:\n The current Token has expired. Please regenerate the Token.\n The provided Token is invalid. Make sure you are using an RTM Token.\n Network error. Please check your network."
+      },
+      {
+        "kMusicContentCenterReasonPermissionAndResource": "3: Permission error or music resource does not exist. Make sure your project has enabled the Agora Music Content Center permission. Please [contact technical support](https://ticket.shengwang.cn/)."
+      },
+      {
+        "kMusicContentCenterReasonInternalDataParse": "4: Internal data parsing error. Please [contact technical support](https://ticket.shengwang.cn/)."
+      },
+      {
+        "kMusicContentCenterReasonMusicLoading": "5: Error occurred while loading music resource. Please [contact technical support](https://ticket.shengwang.cn/)."
+      },
+      {
+        "kMusicContentCenterReasonMusicDecryption": "6: Error occurred while decrypting music resource. Please [contact technical support](https://ticket.shengwang.cn/)."
+      },
+      {
+        "kMusicContentCenterReasonHttpInternalError": "7: Internal HTTP error. Please try again later."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "enum_musicplaymode",
+    "name": "MusicPlayMode",
+    "description": "Playback mode of music resources.",
+    "parameters": [
+      {
+        "kMusicPlayModeOriginal": "0: Original vocal."
+      },
+      {
+        "kMusicPlayModeAccompany": "1: Accompaniment."
+      },
+      {
+        "kMusicPlayModeLeadSing": "2: Lead vocal."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
     "id": "enum_networktype",
     "name": "NETWORK_TYPE",
     "description": "Network connection type.",
@@ -13503,6 +14426,27 @@
       },
       {
         "PLAYER_PRELOAD_EVENT_ERROR": "2: Error occurred during media resource preload."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "enum_preloadstate",
+    "name": "PreloadState",
+    "description": "Music resource preload state.",
+    "parameters": [
+      {
+        "kPreloadStateCompleted": "0: Music resource preload completed."
+      },
+      {
+        "kPreloadStateFailed": "1: Music resource preload failed."
+      },
+      {
+        "kPreloadStatePreloading": "2: Music resource is preloading."
+      },
+      {
+        "kPreloadStateRemoved": "3: Cached music resource has been removed."
       }
     ],
     "returns": "",
@@ -13635,6 +14579,21 @@
       },
       {
         "RECORDER_STATE_STOP": "3: Audio/video stream recording stops."
+      }
+    ],
+    "returns": "",
+    "is_hide": false
+  },
+  {
+    "id": "enum_recorderstreamtype",
+    "name": "RecorderStreamType",
+    "description": "Type of video stream to be recorded.",
+    "parameters": [
+      {
+        "RTC": "0: (Default) In-channel video stream."
+      },
+      {
+        "PREVIEW": "1: Local preview video stream before joining the channel."
       }
     ],
     "returns": "",
