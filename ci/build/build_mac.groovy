@@ -6,7 +6,7 @@ import groovy.transform.Field
 buildUtils = new agora.build.BuildUtils()
 
 compileConfig = [
-    "sourceDir": "agora-c_sharp-sdk",
+    "sourceDir": "shengwang-c_sharp-sdk",
     "non-publish": [
         "command": "./ci/build/build_mac.sh",
         "extraArgs": "",
